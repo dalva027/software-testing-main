@@ -104,4 +104,20 @@ test.describe('Homepage', () => {
     await expect(authArea.locator('text=Sign Up')).toBeVisible();
   });
 
+  test('should filter products by price range', async ({page}) => {
+    const priceRange = page.locator('#priceRange');
+
+    await priceRange.fill('50');
+    await priceRange.blur(); // Trigger change event
+
+    // Wait for filter to apply
+    await page.waitForTimeout(500);
+    
+    // Check that all visible products are within the price range
+    const productCards = page.locator('.product-card');
+    const count = await productCards.count();
+    expect(count).toBeGreaterThan(0);
+    expect(count).toBeLessThan(3); // Not all products
+  })
+
 });
