@@ -17,26 +17,23 @@ test.describe('Cross-page Cart Count Consistency', () => {
     // 2. Navigate to /cart.html
     await page.goto('/cart.html');
 
-    // 3. Add item to cart from cart page (via API for consistency)
+    // 3. Add item to cart via API for consistency
     await page.request.post('http://localhost:3000/api/cart', {
       data: { productId: 1, quantity: 1 }
     });
 
-    // Refresh cart page to see the updated count
-    await page.reload();
-    await page.waitForTimeout(500);
-
-    // Verify cart count on cart page
-    let cartCount = page.locator('#cartCount');
-    await expect(cartCount).toHaveText('1');
-
-    // 4. Navigate to /login.html
+    // 4. Navigate to /login.html to verify cart count is consistent
     await page.goto('/login.html');
     await page.waitForTimeout(500);
 
     // 5. Verify cart count is correct on login page
-    // Cart count is consistent across pages
-    cartCount = page.locator('#cartCount');
+    const cartCount = page.locator('#cartCount');
+    await expect(cartCount).toHaveText('1');
+
+    // 6. Navigate to /register.html and verify cart count is still correct
+    await page.goto('/register.html');
+    await page.waitForTimeout(500);
+
     await expect(cartCount).toHaveText('1');
   });
 

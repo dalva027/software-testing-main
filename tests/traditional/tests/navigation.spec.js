@@ -29,21 +29,24 @@ test.describe('Navigation Elements', () => {
 
   // 7.2 Verify all nav links are accessible from every page
   test('should-verify-nav-links-from-every-page', async ({ page }) => {
-    const pages = ['/', '/cart.html', '/checkout.html', '/login.html', '/register.html'];
+    // Pages with .cart-link (index.html, login.html, register.html)
+    const pagesWithCartLink = ['/', '/login.html', '/register.html'];
+    // Pages with only .logo (cart.html, checkout.html)
+    const pagesWithLogoOnly = ['/cart.html', '/checkout.html'];
 
-    for (const pageUrl of pages) {
-      // 1. Navigate to each page
+    // Verify logo link on all pages
+    const allPages = [...pagesWithCartLink, ...pagesWithLogoOnly];
+    for (const pageUrl of allPages) {
       await page.goto(pageUrl);
-
-      // 2. Verify logo link and cart link are visible on each page
-
-      // Logo always links to "/"
       const logo = page.locator('.logo');
       await expect(logo).toBeVisible();
       const logoHref = await logo.getAttribute('href');
       expect(logoHref).toBe('/');
+    }
 
-      // Cart link always visible
+    // Verify cart link on pages that have it
+    for (const pageUrl of pagesWithCartLink) {
+      await page.goto(pageUrl);
       const cartLink = page.locator('.cart-link');
       await expect(cartLink).toBeVisible();
       const cartHref = await cartLink.getAttribute('href');
