@@ -5,7 +5,8 @@
       "mcp__playwright-test__browser_navigate",
       "mcp__playwright-test__generator_setup_page",
       "mcp__playwright-test__generator_write_test",
-      "Bash(npx playwright *)"
+      "Bash(npx playwright *)",
+      "Bash(node *)"
     ]
   },
   "enableAllProjectMcpServers": true,
